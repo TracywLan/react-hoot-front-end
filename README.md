@@ -1,5 +1,6 @@
 # Hoot: Blogging for Night Owls
-![Landing Page Screenshot](images/landing-screenshot.png)
+![Landing Page Screenshot](public/images/landing-screenshoot.png)
+
 Hoot is a front-end blogging application built with React and JWT Authentication. Paired with an Express API backend and MongoDB database, it forms a complete MERN stack application.
 
 JWT Authentication enables users to sign up, sign in, and sign out. Authenticated users can create, read, update, and delete "hoots" (blog posts) and manage comments on individual hoots.
