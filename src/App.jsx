@@ -5,7 +5,6 @@ import NavBar from './components/NavBar/NavBar';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Landing from './components/Landing/Landing';
-import Dashboard from './components/Dashboard/Dashboard';
 import HootList from './components/HootList/HootList'
 import * as hootService from './services/hootService'
 import HootDetails from './components/HootDetails/HootDetails';
@@ -63,7 +62,7 @@ const App = () => {
     <>
       <NavBar/>
       <Routes>
-        <Route path='/' element={user ? <Dashboard /> : <Landing />} />
+        <Route path='/' element={<Landing />} />
         { user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
