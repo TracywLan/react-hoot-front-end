@@ -12,7 +12,7 @@ import HootDetails from './components/HootDetails/HootDetails';
 import HootForm from './components/HootForm/HootForm';
 
 import { UserContext } from './contexts/UserContext';
-
+import './App.css'
 
 
 const App = () => {
@@ -44,6 +44,21 @@ const App = () => {
     navigate('/hoots')
   }
 
+  const handleUpdateHoot = async (hootId, hootFormData) => {
+    try {
+      const updatedHoot = await hootService.update(hootId, hootFormData);
+      setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)))
+      navigate(`/hoots/${hootId}`);
+    } catch (error) {
+      console.log(error);
+      }; 
+    }
+
+  // We use map() to iterate over the hoots array and check each hoot object.
+// If the _id of the current hoot matches the hootId, we replace it with the updatedHoot.
+// If the _id of the current hoot doesn’t match, we return the original hoot object.
+
+
   return (
     <>
       <NavBar/>
@@ -55,6 +70,7 @@ const App = () => {
             <Route path='/hoots' element={<HootList hoots={hoots}/>}/>
             <Route path='/hoots/:hootId' element={<HootDetails handleDeleteHoot={handleDeleteHoot} />} />
             <Route path='/hoots/new' element={<HootForm handleAddHoot={handleAddHoot}/>} />
+            <Route path='/hoots/:hootId/edit' element={<HootForm handleUpdateHoot={handleUpdateHoot}/>} />
           </>
         ) : (
           <>
@@ -67,5 +83,6 @@ const App = () => {
     </>
   );
 };
+
 
 export default App;
