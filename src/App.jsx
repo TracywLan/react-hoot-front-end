@@ -38,6 +38,12 @@ const App = () => {
     navigate('/hoots')
   }
 
+  const handleDeleteHoot = async(hootId) => {
+    await hootService.deleteHoot(hootId)
+    setHoots(hoots.filter((hoot) => hoot._id !== hootId)) //our filter() method returns only the hoot objects whose _id values do not match the hootId
+    navigate('/hoots')
+  }
+
   return (
     <>
       <NavBar/>
@@ -47,9 +53,8 @@ const App = () => {
           <>
             {/* Protected routes (available only to signed-in users) */}
             <Route path='/hoots' element={<HootList hoots={hoots}/>}/>
-            <Route path='/hoots/:hootId' element={<HootDetails />} />
+            <Route path='/hoots/:hootId' element={<HootDetails handleDeleteHoot={handleDeleteHoot} />} />
             <Route path='/hoots/new' element={<HootForm handleAddHoot={handleAddHoot}/>} />
-
           </>
         ) : (
           <>

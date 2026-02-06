@@ -9,7 +9,7 @@ const CommentForm = (props) => {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        props.handleAddComment(formData);
+        props.handleAddComment(formData); //call handleAddComment thats been passed down
         setFormData({ text:'' }); //reset formdata after submit
     };
 

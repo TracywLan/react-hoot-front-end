@@ -1,26 +1,37 @@
 import { useParams } from "react-router"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import * as hootService from '../../services/hootService'
 import CommentForm from "../CommentForm/CommentForm";
+import { UserContext } from "../../contexts/UserContext";
 
-const handleAddComment = async (commentFormData) => {
-    console.log('commentFormData', commentFormData);
-    
-}
-
-const HootDetails = () => {
-    const [hoot, setHoots] = useState(null);
+const HootDetails = (props) => {
     const { hootId } = useParams();
+    // Access the user object from the UserContext
+    const { user } = useContext(UserContext);
+    const [hoot, setHoot] = useState(null);
 
     useEffect(() => {
         const fetchHoot = async () => {
             const hootData = await hootService.show(hootId);
-            setHoots(hootData);
+            setHoot(hootData);
         };
         fetchHoot();
     }, [hootId]);
 
-    if (!hoot) return <main>Loading...</main>
+    const handleAddComment = async (commentFormData) => {
+        const newComment = await hootService.createComment(hootId, commentFormData);
+        setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
+    }
+
+    if (!hoot) return <main>Loading...</main>;
+    if (hoot.err || !hoot.category) {
+        return (
+            <main>
+                <h1>Hoot not found</h1>
+                <p>The hoot you are looking for does not exist.</p>
+            </main>
+        );
+    }
 
     return (
     <main>
@@ -32,6 +43,14 @@ const HootDetails = () => {
                     {`${hoot.author.username} posted on
                     ${new Date(hoot.createdAt).toLocaleDateString()}`}
                 </p>
+                {hoot.author._id === user._id && (
+                    <>
+                        <button onClick={()=>props.handleDeleteHoot(hootId)}>  
+                            {/* hootId will tell the function which hoot to delete */}
+                            Delete
+                        </button>
+                    </>
+                )}
             </header>
             <p>{hoot.text}</p>
         </section>
